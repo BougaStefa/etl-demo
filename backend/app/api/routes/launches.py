@@ -16,7 +16,6 @@ def get_all_launches(db: Session = Depends(get_db)):
 # get endpoint, gets launch by id
 @router.get("/{launch_id}", response_model=Launch)
 def get_launch(launch_id: str, db: Session = Depends(get_db)):
-    """Get a specific launch by ID"""
     launch = db.query(LaunchData).filter(LaunchData.id == launch_id).first()
     if not launch:
         raise HTTPException(status_code=404, detail="Launch not found")
