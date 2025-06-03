@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import List, Dict, Any
+from datetime import datetime, UTC
+from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.dialects.postgresql import insert
 from ..database import LaunchData
@@ -11,7 +11,7 @@ class ETLManager:
         self.spacex_api = SpaceXAPI()
     
     def transform_launch(self, launch: Dict[Any, Any]) -> Dict[Any, Any]:
-        now = datetime.utcnow()
+        now = datetime.now(UTC)
         return {
             "id": launch["id"],
             "name": launch["name"],
