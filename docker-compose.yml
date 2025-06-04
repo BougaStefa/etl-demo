@@ -1,0 +1,17 @@
+services:
+  backend:
+    build: ./backend
+    network_mode: host
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app:/app
+      - ./backend/.env:/app/.env           # <-- Mounts backend .env into container
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/app
+      - ./frontend/.env:/app/.env          # <-- Mounts frontend .env into container
