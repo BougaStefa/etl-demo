@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordRequestForm
-from ...core.security import create_access_token
+from core.security import create_access_token
 from datetime import timedelta
 from typing import Dict
 

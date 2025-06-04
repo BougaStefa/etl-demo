@@ -1,7 +1,7 @@
 import asyncio
 import typer
-from .database import SessionLocal, create_tables
-from .etl.manager import ETLManager
+from database import SessionLocal, create_tables
+from etl.manager import ETLManager
 
 app = typer.Typer()
 
