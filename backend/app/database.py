@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # env url
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./test.db")
 
 # create engine with connection string
 engine = create_engine(DATABASE_URL)
@@ -30,6 +30,15 @@ class LaunchData(Base):
     rocket_id = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=True)
     updated_at = Column(DateTime, nullable=True)
+
+class User(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    email = Column(String, unique=True, index=True, nullable=True)
+    hashed_password = Column(String)
+    is_active = Column(Boolean, default=True)
 
 def create_tables():
     # creates the tables if they dont exist

@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.api import api_router
+from database import create_tables
+
+create_tables()  # Ensure tables are created at startup
 
 app = FastAPI(title="SpaceX API")
 
