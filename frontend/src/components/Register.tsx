@@ -1,35 +1,30 @@
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useRegister } from "../hooks/useRegister";
 
-//!TODO: Add user feedback for failed login attempts
-//
-// redirects to launches page on successful login
-export const Login = ({
-  onLoginSuccess,
-  onRegisterClick,
+export const Register = ({
+  onRegisterSuccess,
 }: {
-  onLoginSuccess: () => void;
-  onRegisterClick: () => void;
+  onRegisterSuccess: () => void;
 }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // custom login hook that handles authentication
-  const { mutate: login, error, isPending } = useAuth(onLoginSuccess); // renamed to login for clarity
+  const [email, setEmail] = useState("");
+
+  const { mutate: register, error, isPending } = useRegister(onRegisterSuccess);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    login({ username, password });
+    register({ username, password, email: email || undefined });
   };
-
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-bold text-gray-900">
-            SpaceX Launch Tracker
+            Create an Account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in to view launches
+            Sign up to access SpaceX Launch Tracker
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -49,6 +44,19 @@ export const Login = ({
               />
             </div>
             <div>
+              <label htmlFor="email" className="sr-only">
+                Email (optional)
+              </label>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                placeholder="Email (optional)"
+              />
+            </div>
+            <div>
               <label htmlFor="password" className="sr-only">
                 Password
               </label>
@@ -63,10 +71,9 @@ export const Login = ({
               />
             </div>
           </div>
-          {/* Display error message if login fails */}
           {error && (
             <div className="text-red-600 text-sm text-center">
-              Invalid username or password
+              {(error as any).response?.data?.detail || "Registration failed"}
             </div>
           )}
           <div>
@@ -75,18 +82,8 @@ export const Login = ({
               disabled={isPending}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-400"
             >
-              {/* Show loading state when signing in */}
-              {isPending ? "Signing in..." : "Sign in"}
+              {isPending ? "Creating account..." : "Create account"}
             </button>
-          </div>
-          <div className="text-sm text-center mt-4">
-            <a
-              href="#"
-              className="font-medium text-blue-600 hover:text-blue-500"
-              onClick={onRegisterClick}
-            >
-              Don't have an account? Sign up
-            </a>
           </div>
         </form>
       </div>
