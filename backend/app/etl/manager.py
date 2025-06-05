@@ -3,7 +3,7 @@ from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
 from sqlalchemy.dialects.postgresql import insert
 from database import LaunchData
-from spacex import SpaceXAPI
+from etl.spacex import SpaceXAPI
 
 class ETLManager:
     def __init__(self, db: Session):
