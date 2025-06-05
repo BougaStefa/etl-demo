@@ -39,13 +39,15 @@ jobs:
 
     - name: Install dependencies
       run: |
+        cd backend
         python -m venv venv
         source venv/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
-        pip install email-validator
 
     - name: Run tests
       run: |
+        cd backend
         source venv/bin/activate
-        pytest
+        PYTHONPATH=app pytest
+        
