@@ -34,7 +34,10 @@ const AppContent = () => {
   return (
     <div>
       {showRegister ? (
-        <Register onRegisterSuccess={handleRegisterSuccess} />
+        <Register
+          onRegisterSuccess={handleRegisterSuccess}
+          onLoginClick={() => setShowRegister(false)}
+        />
       ) : (
         <Login
           onLoginSuccess={handleLoginSuccess}

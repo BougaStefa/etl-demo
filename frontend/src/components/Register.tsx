@@ -3,8 +3,10 @@ import { useRegister } from "../hooks/useRegister";
 
 export const Register = ({
   onRegisterSuccess,
+  onLoginClick,
 }: {
   onRegisterSuccess: () => void;
+  onLoginClick: () => void;
 }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -71,11 +73,7 @@ export const Register = ({
               />
             </div>
           </div>
-          {error && (
-            <div className="text-red-600 text-sm text-center">
-              {(error as any).response?.data?.detail || "Registration failed"}
-            </div>
-          )}
+
           <div>
             <button
               type="submit"
@@ -85,6 +83,22 @@ export const Register = ({
               {isPending ? "Creating account..." : "Create account"}
             </button>
           </div>
+
+          <div className="text-sm text-center">
+            <a
+              href="#"
+              className="font-medium text-blue-600 hover:text-blue-500"
+              onClick={onLoginClick}
+            >
+              Already have an account? Sign in
+            </a>
+          </div>
+
+          {error && (
+            <div className="text-red-600 text-sm text-center">
+              {(error as any).response?.data?.detail || "Registration failed"}
+            </div>
+          )}
         </form>
       </div>
     </div>
