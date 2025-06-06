@@ -1,6 +1,6 @@
-from sqlalchemy import create_engine, Column, String, Boolean, DateTime, Integer
+from sqlalchemy import create_engine, Column, String, Boolean, DateTime, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 import os
 from dotenv import load_dotenv
 
@@ -17,6 +17,18 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # base class for models
 Base = declarative_base()
 
+class LaunchBookmark(Base):
+    __tablename__ = "launch_bookmarks"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    launch_id = Column(String, ForeignKey("launches.id"), nullable=False)
+    created_at = Column(DateTime, nullable=True)
+
+    # Add relationships
+    user = relationship("User", back_populates="bookmarks")
+    launch = relationship("LaunchData", back_populates="bookmarks")
+
 # Define LaunchData model
 class LaunchData(Base):
     __tablename__ = "launches"
@@ -30,6 +42,8 @@ class LaunchData(Base):
     rocket_id = Column(String, nullable=True)
     created_at = Column(DateTime, nullable=True)
     updated_at = Column(DateTime, nullable=True)
+    # Add relationship to bookmarks
+    bookmarks = relationship("LaunchBookmark", back_populates="launch")
 
 class User(Base):
     __tablename__ = "users"
@@ -39,6 +53,9 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=True)
     hashed_password = Column(String)
     is_active = Column(Boolean, default=True)
+    # Add relationship to bookmarks
+    bookmarks = relationship("LaunchBookmark", back_populates="user")
+
 
 def create_tables():
     # creates the tables if they dont exist

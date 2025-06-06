@@ -22,4 +22,4 @@ class Launch(LaunchBase):
     updated_at: Optional[datetime] = None
 
     class Config:
-        orm_mode = True  # to convert from SQLAlchemy to Pydantic
+        from_attributes = True  # to convert from SQLAlchemy to Pydantic
