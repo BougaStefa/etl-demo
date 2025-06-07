@@ -1,11 +1,30 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
+from datetime import datetime, UTC
+import logging
+from etl.manager import ETLManager
 from fastapi.middleware.cors import CORSMiddleware
 from api.api import api_router
-from database import create_tables
+from database import create_tables, SessionLocal
 
 create_tables()  # Ensure tables are created at startup
 
 app = FastAPI(title="SpaceX API")
+logger = logging.getLogger(__name__)
+
+async def run_background_etl():
+    """ETL process to run in background"""
+    session = SessionLocal()
+    try:
+        manager = ETLManager(session)
+        await manager.execute_etl()
+    finally:
+        session.close()
+
+@app.post("/etl/trigger")
+async def trigger_etl(background_tasks: BackgroundTasks):
+    """Endpoint to trigger ETL process in background"""
+    background_tasks.add_task(run_background_etl)
+    return {"message": "ETL process started in background"}
 
 app.add_middleware(
     CORSMiddleware,

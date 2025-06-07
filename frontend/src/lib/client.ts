@@ -18,7 +18,7 @@ apiClient.interceptors.request.use((config) => {
   return config;
 });
 
-// if the token has expired or invalid remove it and reload the page
+// if the token has expired or invalid remove it and reload the page(if it exists)
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {

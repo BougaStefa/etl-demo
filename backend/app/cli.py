@@ -1,20 +1,21 @@
 import asyncio
-from database import SessionLocal, create_tables
+import logging
+from database import SessionLocal
 from etl.manager import ETLManager
 
-def main():
-    # Create tables
-    create_tables()
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
-    db = SessionLocal()
-
-    # Run pipeline to fetch and store SpaceX launch data
+async def run_etl():
+    """Run ETL process"""
+    session = SessionLocal()
     try:
-        etl_manager = ETLManager(db)
-        count = asyncio.run(etl_manager.run_etl())
-        print(f"Successfully processed {count} launches")
+        manager = ETLManager(session)
+        await manager.execute_etl()
     finally:
-        db.close()
+        session.close()
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(run_etl())
