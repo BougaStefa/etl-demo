@@ -45,6 +45,9 @@ A full-stack ETL app that fetches and displayes SpaceX launch data. Built with F
 
 Secrets are included in the MS Form I filled out.
 
+### Live Demo
+Check out the app at: https://etl-demo.vercel.app
+
 ## Future Improvements
 - Filter and sort options for launches
 - Profile page for users
