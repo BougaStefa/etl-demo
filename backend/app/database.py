@@ -1,4 +1,5 @@
 from sqlalchemy import create_engine, Column, String, Boolean, DateTime, Integer, ForeignKey
+from datetime import datetime, UTC
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
 import os
@@ -23,7 +24,7 @@ class LaunchBookmark(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     launch_id = Column(String, ForeignKey("launches.id"), nullable=False)
-    created_at = Column(DateTime, nullable=True)
+    created_at = Column(DateTime, nullable=True, default=datetime.now(UTC))
 
     # Add relationships
     user = relationship("User", back_populates="bookmarks")

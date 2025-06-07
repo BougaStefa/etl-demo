@@ -12,7 +12,7 @@ class Bookmark(BookmarkBase):
     id: int
     user_id: int
     created_at: datetime
-    launch: Launch
+    launch_id: str
 
     class Config:
         from_attributes = True
