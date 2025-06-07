@@ -1,10 +1,17 @@
 // src/components/LaunchList.tsx
 import { useState } from "react";
 import { useLaunches } from "../hooks/useLaunches";
+import { useBookmarks, useToggleBookmark } from "../hooks/useBookmarks";
 import type { Launch } from "../types";
+
 export const LaunchList = () => {
   const { data: launches, isLoading, error, refetch } = useLaunches();
+  const { data: bookmarks } = useBookmarks();
+  const { mutate: toggleBookmark } = useToggleBookmark();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // set for a faster lookup of bookmarked launches
+  const bookmarkedLaunches = new Set(bookmarks?.map((b) => b.launch_id) || []);
 
   if (isLoading) {
     return (
@@ -48,9 +55,22 @@ export const LaunchList = () => {
               key={launch.id}
               className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow"
             >
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                {launch.name}
-              </h3>
+              <div className="flex justify-between items-start">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                  {launch.name}
+                </h3>
+                <button
+                  onClick={() => toggleBookmark(launch.id)}
+                  className="text-2xl text-yellow-400 hover:text-yellow-500 transition-colors focus:outline-none"
+                  aria-label={
+                    bookmarkedLaunches.has(launch.id)
+                      ? "Remove bookmark"
+                      : "Add bookmark"
+                  }
+                >
+                  {bookmarkedLaunches.has(launch.id) ? "★" : "☆"}
+                </button>
+              </div>
               <p className="text-gray-600 mb-1">
                 Flight Number: {launch.flight_number}
               </p>
@@ -78,9 +98,7 @@ export const LaunchList = () => {
                 {expandedId === launch.id ? "Show Less" : "Show Details"}
               </button>
               {expandedId === launch.id && launch.details && (
-                <div className="mt-4 text-gray-700 text-sm bg-gray-50 p-4 rounded-lg">
-                  <p>{launch.details}</p>
-                </div>
+                <p className="mt-4 text-gray-600">{launch.details}</p>
               )}
             </div>
           ))}
