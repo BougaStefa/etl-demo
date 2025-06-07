@@ -1,10 +1,10 @@
 from fastapi import FastAPI, BackgroundTasks
 from datetime import datetime, UTC
 import logging
-from etl.manager import ETLManager
+from app.etl.manager import ETLManager
 from fastapi.middleware.cors import CORSMiddleware
-from api.api import api_router
-from database import create_tables, SessionLocal
+from app.api.api import api_router
+from app.database import create_tables, SessionLocal
 
 create_tables()  # Ensure tables are created at startup
 

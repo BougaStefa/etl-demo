@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
-from database import get_db, LaunchBookmark, LaunchData
-from models.bookmark import BookmarkCreate, Bookmark
-from core.deps import get_current_user_id
+from app.database import get_db, LaunchBookmark, LaunchData
+from app.models.bookmark import BookmarkCreate, Bookmark
+from app.core.deps import get_current_user_id
 
 router = APIRouter()
 

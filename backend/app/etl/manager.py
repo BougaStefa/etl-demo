@@ -2,8 +2,8 @@ from datetime import datetime, UTC
 from typing import List, Dict, Any
 from sqlalchemy.orm import Session
 from sqlalchemy.dialects.postgresql import insert
-from database import LaunchData
-from etl.spacex import SpaceXAPI
+from app.database import LaunchData
+from app.etl.spacex import SpaceXAPI
 import logging
 
 logger = logging.getLogger(__name__)
