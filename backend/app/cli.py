@@ -1,7 +1,7 @@
 import asyncio
 import logging
-from database import SessionLocal
-from etl.manager import ETLManager
+from app.database import SessionLocal
+from app.etl.manager import ETLManager
 
 logging.basicConfig(
     level=logging.INFO,

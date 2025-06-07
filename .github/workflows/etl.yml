@@ -2,8 +2,8 @@ name: Scheduled ETL Process
 
 on:
   schedule:
-    - cron: '0 * * * *'  # hourly
-  workflow_dispatch:      # allow manual triggering
+    - cron: '0 * * * *'  # Runs every hour
+  workflow_dispatch:      # Allows manual triggers
     inputs:
       user:
         description: 'User triggering the workflow'
@@ -14,6 +14,10 @@ jobs:
   etl:
     runs-on: ubuntu-latest
     
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      PYTHONPATH: .
+
     steps:
     - uses: actions/checkout@v3
     
@@ -30,14 +34,10 @@ jobs:
     
     - name: Run ETL Process
       working-directory: ./backend
-      env:
-        DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        PYTHONPATH: .
       run: |
         if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
           echo "Manual trigger by ${{ github.actor }} at $(date -u '+%Y-%m-%d %H:%M:%S')"
-          python -m app.cli
         else
           echo "Scheduled run at $(date -u '+%Y-%m-%d %H:%M:%S')"
-          python -m app.cli
         fi
+        python -m app.cli
