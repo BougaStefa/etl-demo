@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./backend/app:/app
+      - ./backend:/app
       - ./backend/.env:/app/.env           # <-- Mounts backend .env into container
 
   frontend:
