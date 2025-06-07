@@ -27,8 +27,13 @@ const AppContent = () => {
     setShowRegister(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsAuthenticated(false);
+  };
+
   if (isAuthenticated) {
-    return <LaunchList />;
+    return <LaunchList onLogout={handleLogout} />;
   }
 
   return (

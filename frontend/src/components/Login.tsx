@@ -13,11 +13,15 @@ export const Login = ({
 }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
   // custom login hook that handles authentication
-  const { mutate: login, error, isPending } = useAuth(onLoginSuccess); // renamed to login for clarity
+  const { mutate: login, isPending } = useAuth(onLoginSuccess, () =>
+    setShowError(true),
+  ); // renamed to login for clarity
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setShowError(false);
     login({ username, password });
   };
 
@@ -64,7 +68,7 @@ export const Login = ({
             </div>
           </div>
           {/* Display error message if login fails */}
-          {error && (
+          {showError && (
             <div className="text-red-600 text-sm text-center">
               Invalid username or password
             </div>
@@ -83,7 +87,10 @@ export const Login = ({
             <a
               href="#"
               className="font-medium text-blue-600 hover:text-blue-500"
-              onClick={onRegisterClick}
+              onClick={(e) => {
+                e.preventDefault();
+                onRegisterClick();
+              }}
             >
               Don't have an account? Sign up
             </a>

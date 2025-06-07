@@ -17,7 +17,10 @@ type LoginError = {
 };
 
 // hook handles authentication
-export const useAuth = (onSuccess?: () => void) => {
+export const useAuth = (
+  onSuccess?: () => void,
+  onError?: (error: unknown) => void,
+) => {
   return useMutation<LoginResponse, LoginError, LoginCredentials>({
     // performs login http request with encoded credentials
     mutationFn: async (credentials) => {
@@ -37,6 +40,9 @@ export const useAuth = (onSuccess?: () => void) => {
       localStorage.setItem("token", data.access_token);
       // execute if provided
       onSuccess?.();
+    },
+    onError: (error) => {
+      onError?.(error);
     },
   });
 };

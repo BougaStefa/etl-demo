@@ -88,7 +88,10 @@ export const Register = ({
             <a
               href="#"
               className="font-medium text-blue-600 hover:text-blue-500"
-              onClick={onLoginClick}
+              onClick={(e) => {
+                e.preventDefault();
+                onLoginClick();
+              }}
             >
               Already have an account? Sign in
             </a>
