@@ -1,12 +1,15 @@
 services:
   backend:
     build: ./backend
-    network_mode: host
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
-      - ./backend/.env:/app/.env           # <-- Mounts backend .env into container
+      - ./backend/.env:/app/.env # <-- Mounts backend .env into container
+    sysctls:
+      - net.ipv6.conf.all.disable_ipv6=0
+    networks:
+      - app-network
 
   frontend:
     build: ./frontend
@@ -14,4 +17,15 @@ services:
       - "3000:80"
     volumes:
       - ./frontend:/app
-      - ./frontend/.env:/app/.env          # <-- Mounts frontend .env into container
+      - ./frontend/.env:/app/.env # <-- Mounts frontend .env into container
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    enable_ipv6: true
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: fd00::/80
