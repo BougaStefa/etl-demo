@@ -1,4 +1,12 @@
-from sqlalchemy import create_engine, Column, String, Boolean, DateTime, Integer, ForeignKey
+from sqlalchemy import (
+    create_engine,
+    Column,
+    String,
+    Boolean,
+    DateTime,
+    Integer,
+    ForeignKey,
+)
 from datetime import datetime, UTC
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, declarative_base, relationship
@@ -18,6 +26,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 # base class for models
 Base = declarative_base()
 
+
 class LaunchBookmark(Base):
     __tablename__ = "launch_bookmarks"
 
@@ -29,6 +38,7 @@ class LaunchBookmark(Base):
     # Add relationships
     user = relationship("User", back_populates="bookmarks")
     launch = relationship("LaunchData", back_populates="bookmarks")
+
 
 # Define LaunchData model
 class LaunchData(Base):
@@ -46,6 +56,7 @@ class LaunchData(Base):
     # Add relationship to bookmarks
     bookmarks = relationship("LaunchBookmark", back_populates="launch")
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -61,6 +72,7 @@ class User(Base):
 def create_tables():
     # creates the tables if they dont exist
     Base.metadata.create_all(bind=engine)
+
 
 # db session dependency
 def get_db():
